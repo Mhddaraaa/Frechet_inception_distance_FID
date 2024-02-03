@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 from torchsummary import summary
-from Generator_Critic import weights_init
 from tqdm.auto import tqdm
 import os
 

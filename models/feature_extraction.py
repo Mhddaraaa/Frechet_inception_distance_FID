@@ -1,8 +1,8 @@
-from Classifier import *
+from models.Classifier import *
 from torch import nn
 import matplotlib.pyplot as plt
-from frechet_distance import *
-from Generator_Critic import gen_noise
+from models.frechet_distance import *
+from models.Generator_Critic import gen_noise
 import numpy as np
 
 Z_DIM = 100

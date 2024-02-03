@@ -1,22 +1,10 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from tqdm.auto import tqdm
-import os
-from frechet_distance import *
-from Generator_Critic import *
-from Classifier import *
-from feature_extraction import *
-
-import scipy
+from models.frechet_distance import *
+from models.Generator_Critic import *
+from models.Classifier import *
+from models.feature_extraction import *
 
 import torch
 from torch import nn
-import torchvision
-import torch.nn.functional as F
-from torch.utils.data import DataLoader
-from torchvision.utils import make_grid
-from torchvision.datasets import MNIST
-from torchvision import transforms
 
 # Hyperparameters
 EPOCH = 20
@@ -45,7 +33,7 @@ classifier_opt_exp_lr_scheduler = torch.optim.lr_scheduler.StepLR(classifier_opt
 # Define loss function for Classifier
 criterion = nn.CrossEntropyLoss()
 
-classifier_path = './model/MNIST_Classifier_GAN_FID'
+classifier_path = 'pretrain_models/MNIST_Classifier_GAN_FID'
 run(classifier=classifier, criterion=criterion, accuracy_fn=accuracy_fn,
     classifier_opt=classifier_opt, opt_scheduler=classifier_opt_exp_lr_scheduler,
     train_loader=train_loader, dev_loader=dev_loader, modelpath=classifier_path, validation=False)
@@ -54,7 +42,7 @@ run(classifier=classifier, criterion=criterion, accuracy_fn=accuracy_fn,
 data, data_classes = get_data(BS)
 C, H, W = next(iter(data))[0][0].shape
 
-generator_path = 'model/cGANs_Gen_mnist'
+generator_path = 'pretrain_models/cGANs_Gen_mnist'
 # Define generator
 gen = Generator().to(device)  # Instantiate the Generator and move it to the specified device (GPU or CPU)
 gen.apply(weights_init)  # Initialize the weights of the generator using the weights_init function
