@@ -5,10 +5,8 @@ import torchvision
 from torchsummary import summary
 from tqdm.auto import tqdm
 import os
+from models.config import *
 
-NUM_CLASS = 10
-C, H, W = 1, 32, 32
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class Classifier(nn.Module):
     def __init__(self, img_ch=1, hidden_ch=32, num_class=NUM_CLASS):
@@ -71,7 +69,7 @@ def classifier_dataset():
                                     download=True,
                                     transform=transform,
                                     target_transform=None)
-    print(len(train_set))
+
 
     train_loader = torch.utils.data.DataLoader(train_set,
                                         batch_size=64,
@@ -80,6 +78,7 @@ def classifier_dataset():
     dev_loader = torch.utils.data.DataLoader(dev_set,
                                         batch_size=64,
                                         shuffle=False)
+    
     return train_loader, dev_loader
 
 
@@ -166,7 +165,7 @@ def run(classifier, criterion, accuracy_fn, classifier_opt, opt_scheduler,
     # Check if a pre-trained classifier model exists
     if os.path.isfile(modelpath):
         classifier.load_state_dict(torch.load(modelpath, map_location=device))
-        print("Check Model accuracy")
+        print("\n>>>Check Classifier Model accuracy")
 
         # Evaluate the accuracy of the pre-trained model on the validation set
         train_model(classifier=classifier, criterion=criterion, accuracy_fn=accuracy_fn,

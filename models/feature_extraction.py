@@ -3,13 +3,9 @@ from torch import nn
 import matplotlib.pyplot as plt
 from models.frechet_distance import *
 from models.Generator_Critic import gen_noise
+from models.config import *
 import numpy as np
 
-Z_DIM = 100
-LR = 2e-4
-BS = 64
-C, H, W = 1, 32, 32
-NUM_CLASS = 10 # 0, 1, 2, ..., 9
 
 class featureExtraction(nn.Module):
 
@@ -35,9 +31,6 @@ class featureExtraction(nn.Module):
 def main(generator, classifier_path, generator_path, train_loader):
     # Instantiate a feature extractor using a pre-trained classifier model
     feature_extractor = featureExtraction(classifier_path).to(device)
-    
-    # Load the pre-trained generator model
-    # generator.load_state_dict(torch.load(generator_path))
 
     # Get a batch of real images from the training loader
     X, y = next(iter(train_loader))

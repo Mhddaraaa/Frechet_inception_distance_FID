@@ -8,18 +8,10 @@ import os
 from tqdm.auto import tqdm
 import matplotlib.pyplot as plt
 from torchvision.utils import make_grid
+from models.config import *
 
-EPOCH = 20
-Z_DIM = 100
-LR = 2e-4
-BS = 64
-C, H, W = 1, 32, 32
-NUM_CLASS = 10 # 0, 1, 2, ..., 9
-EMBED_SIZE = 100
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 #Generator
-
 class Generator(nn.Module):
     def __init__(self, z_dim=Z_DIM, hidden_ch=8, out_ch=C,
                  num_class=NUM_CLASS, img_size=H, embed_size=EMBED_SIZE):
