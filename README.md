@@ -1,5 +1,6 @@
 # **Generative Adversarial Networks(GANs)**
 
+# __Table of content__
 [Usage](#usage)<br>
 [Fréchet inception distance (FID)](#fréchet-inception-distance-fid)<br>
 [How to Calculate the Frechet Inception Distance](#how-to-calculate-the-frechet-inception-distance)<br>
