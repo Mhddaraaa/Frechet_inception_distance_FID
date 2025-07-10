@@ -331,20 +331,23 @@ def run_gen_critic(generator, critic, critic_opt, critic_loss_func, gen_opt, gen
         print('Check generator generated images')
 
         # Load the pre-trained generator model
-        generator.load_state_dict(torch.load(generator_path, map_location=device))
+        generator.load_state_dict(torch.load(
+            generator_path, map_location=device, weights_only=True
+        ))
 
-        # Create a figure for displaying generated images
-        fig = plt.figure(figsize=(8, 4))
-
-        # Generate and display images for each class
-        for i in range(10):
-            num = torch.tensor([i], device=device)
-            generated = generator(gen_noise(1, Z_DIM), num).view(-1, C, H, W)
-            fig.add_subplot(2, 5, i+1)
-            plt.imshow(generated.detach().cpu().squeeze(0).permute(1, 2, 0), cmap='gray_r')
-            plt.title(data_classes[i])
-            plt.axis(False)
     else:
         # Train the generator and critic if no pre-trained model is found
         generator_critic_train(generator, critic, critic_opt, critic_loss_func, gen_opt, gen_loss_func,
                                gen_lr_scheduler, critic_lr_scheduler)
+        
+     # Create a figure for displaying generated images
+    fig = plt.figure(figsize=(8, 4))
+
+    # Generate and display images for each class
+    for i in range(10):
+        num = torch.tensor([i], device=device)
+        generated = generator(gen_noise(1, Z_DIM), num).view(-1, C, H, W)
+        fig.add_subplot(2, 5, i+1)
+        plt.imshow(generated.detach().cpu().squeeze(0).permute(1, 2, 0), cmap='gray_r')
+        plt.title(data_classes[i])
+        plt.axis(False)

@@ -12,7 +12,9 @@ class featureExtraction(nn.Module):
     def __init__(self, modelpath):
         super().__init__()
         self.net = Classifier().to(device)
-        self.net.load_state_dict(torch.load(modelpath, map_location=device))
+        self.net.load_state_dict(torch.load(
+            modelpath, map_location=device, weights_only=True
+        ))
         self.net.pool3.register_forward_hook(self._hook)
 
     def _hook(self, module, input, output):
@@ -28,7 +30,7 @@ class featureExtraction(nn.Module):
         return activations.view(x.shape[0], 128)
     
 
-def main(generator, classifier_path, generator_path, train_loader):
+def main(generator, classifier_path, train_loader):
     # Instantiate a feature extractor using a pre-trained classifier model
     feature_extractor = featureExtraction(classifier_path).to(device)
 

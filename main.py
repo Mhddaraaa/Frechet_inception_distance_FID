@@ -6,6 +6,13 @@ from models.config import *
 
 import torch
 from torch import nn
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-c", "--classifier-path", help="Pretrained classifier model")
+parser.add_argument("-g", "--generator-path", help="Pretrained generator-critic model")
+args = parser.parse_args()
+print(args.generator_path)
 
 
 print("Availabe device is: ", device)
@@ -25,16 +32,30 @@ classifier_opt_exp_lr_scheduler = torch.optim.lr_scheduler.StepLR(classifier_opt
 # Define loss function for Classifier
 criterion = nn.CrossEntropyLoss()
 
-classifier_path = 'pretrain_models/MNIST_Classifier_GAN_FID'
+# classifier_path = 'pretrain_models/MNIST_Classifier_GAN_FID'
+if os.path.isfile(args.classifier_path):
+    print("Loading pretrianed classifier model...")
+    classifier_path = args.classifier_path
+else:
+    print("Starting to train the classifier on MNIST dataset...")
+    classifier_path = ''
+
 run(classifier=classifier, criterion=criterion, accuracy_fn=accuracy_fn,
     classifier_opt=classifier_opt, opt_scheduler=classifier_opt_exp_lr_scheduler,
-    train_loader=train_loader, dev_loader=dev_loader, modelpath=classifier_path, validation=False)
+    train_loader=train_loader, dev_loader=dev_loader, modelpath=classifier_path)
 
 #Prepare Generator
 data, data_classes = get_data(BS)
 C, H, W = next(iter(data))[0][0].shape
 
-generator_path = 'pretrain_models/cGANs_Gen_mnist'
+# generator_path = 'pretrain_models/cGANs_Gen_mnist'
+if os.path.isfile(args.generator_path):
+    print("Loading pretrained generator-critic model...")
+    generator_path = args.generator_path
+else:
+    print("Training the generator-critic model from scratch...")
+    generator_path = ''
+
 # Define generator
 gen = Generator().to(device)  # Instantiate the Generator and move it to the specified device (GPU or CPU)
 gen.apply(weights_init)  # Initialize the weights of the generator using the weights_init function
@@ -52,8 +73,4 @@ run_gen_critic(generator=gen, critic=critic, critic_opt=critic_opt, critic_loss_
                gen_lr_scheduler=gen_exp_lr_scheduler, critic_lr_scheduler=critic_exp_lr_scheduler,
                generator_path=generator_path)
 
-main(gen, classifier_path, generator_path, train_loader)
-
-
-
-
+main(gen, classifier_path, train_loader)

@@ -160,12 +160,14 @@ def train_model(classifier, criterion, accuracy_fn, classifier_opt, opt_schedule
 
 
 def run(classifier, criterion, accuracy_fn, classifier_opt, opt_scheduler,
-        train_loader, dev_loader, modelpath='', validation=False):
+        train_loader, dev_loader, modelpath=''):
 
     # Check if a pre-trained classifier model exists
     if os.path.isfile(modelpath):
-        classifier.load_state_dict(torch.load(modelpath, map_location=device))
-        print("\n>>>Check Classifier Model accuracy")
+        classifier.load_state_dict(torch.load(
+            modelpath, map_location=device, weights_only=True
+        ))
+        print("\n>>> Check Classifier Model accuracy:")
 
         # Evaluate the accuracy of the pre-trained model on the validation set
         train_model(classifier=classifier, criterion=criterion, accuracy_fn=accuracy_fn,
