@@ -15,7 +15,7 @@
 **Run with pretrained models**
 
 ```python
-python main.py -c 'pretrain_models/MNIST_Classifier_GAN_FID' -g 'pretrain_models/cGANs_Gen_mnist
+python main.py -c 'pretrain_models/MNIST_Classifier_GAN_FID' -g 'pretrain_models/cGANs_Gen_mnist'
 ```
 > -c or --classifier-path: flag for classifier model path <br>
 > -g or --generator-path: flag for generator-critic model path<br>
