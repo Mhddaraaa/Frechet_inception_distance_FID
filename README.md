@@ -120,13 +120,13 @@ extracting activations during the forward pass of the model is by attaching a â€
 
 Since intermediate layers of a model are of the type nn.module, we can use these forward hooks on them to serve as a lens to view their activations.
 
-```
+```python
 hook(module, input, output) -> None or modified output
 ```
 
 <br>
 
-```
+```python
 model = inception_v3(pretrained=True)
 model = model.to(device)
 
@@ -154,7 +154,7 @@ hook.remove()
 <br>
 
 we can do the same in class, so we have to define new method same as above function:
-```
+```python
 import torch.nn.functional as F
 class inception_fearture_etraction(nn.Module):
 
@@ -185,7 +185,7 @@ Forward hooks are often used for various purposes, such as feature extraction, m
 ## Create Classifier and train it
 
 Since the inception-v3 train on ImageNET datasets while we want to generate digits. So we need to create our classifier and train it. Here ia our model:
-```
+```python
 ----------------------------------------------------------------
         Layer (type)               Output Shape         Param #
 ================================================================
